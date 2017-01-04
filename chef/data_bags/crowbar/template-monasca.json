@@ -54,20 +54,17 @@
       "crowbar-applied": false,
       "schema-revision": 100,
       "element_states": {
-        "monasca-api": [ "readying", "ready", "applying" ],
         "monasca-server": [ "readying", "ready", "applying" ],
         "monasca-agent": [ "readying", "ready", "applying" ]
       },
       "elements": {},
       "element_order": [
-        [ "monasca-api" ],
         [ "monasca-server" ],
         [ "monasca-agent" ]
       ],
       "element_run_list_order": {
-        "monasca-api": 110,
-        "monasca-server": 120,
-        "monasca-agent": 130
+        "monasca-server": 110,
+        "monasca-agent": 120
       },
       "config": {
         "environment": "monasca-base-config",

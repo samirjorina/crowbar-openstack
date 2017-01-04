@@ -1,10 +1,9 @@
 DESCRIPTION
 ===========
 
-Chef Cookbook to install and configure Monasca. This cookbook contains 3 roles:
+Chef Cookbook to install and configure Monasca. This cookbook contains 2 roles:
 
 * monasca-agent: deploys monasca-agent on arbitrary nodes
-* monasca-api: deploys monasca-api on OpenStack controller nodes
 * monasca-server: deploys Monasca's backend services on dedicated Monasca nodes
 
 REQUIREMENTS

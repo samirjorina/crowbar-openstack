@@ -93,10 +93,6 @@ class MonascaService < PacemakerServiceObject
       "monasca-server" => [server_nodes.first.name]
     } unless server_nodes.nil?
 
-    base["deployment"][@bc_name]["elements"] = {
-      "monasca-api" => [api_nodes.first.name]
-    } unless api_nodes.nil?
-
     base["attributes"][@bc_name]["database_instance"] =
       find_dep_proposal("database")
     base["attributes"][@bc_name]["keystone_instance"] =
@@ -110,7 +106,6 @@ class MonascaService < PacemakerServiceObject
 
   def validate_proposal_after_save(proposal)
     validate_one_for_role proposal, "monasca-server"
-    validate_one_for_role proposal, "monasca-api"
 
     super
   end
