@@ -19,9 +19,6 @@ include_recipe "apache2::mod_wsgi"
 include_recipe "apache2::mod_rewrite"
 include_recipe "#{@cookbook_name}::common"
 
-application_path = "/srv/www/monasca-api"
-application_exec_path = "#{application_path}/app.wsgi"
-
 apache_module "deflate" do
   conf false
   enable true
@@ -34,16 +31,14 @@ end
 ### TODO: uncomment this once there is a package.
 # package "openstack-monasca-api"
 
-
 ### FIXME: remove this once there is a package creating this directory
 
-
 directory "/etc/monasca/" do
-  owner 'root'
-  group 'root'
-  mode 0755
+  owner "root"
+  group "root"
+  mode 0o755
   recursive true
-  notifies :create, 'template[/etc/monasca/api-config.conf]'
+  notifies :create, "template[/etc/monasca/api-config.conf]"
 end
 
 ha_enabled = node[:monasca][:ha][:enabled]
@@ -97,17 +92,17 @@ end
 
 ### FIXME: uncomment this once we have a package that contains a monasca-manage
 ### command.
-#execute "monasca-manage db upgrade" do
-#  user node[:monasca][:user]
-#  group node[:monasca][:group]
-#  command "monasca-manage db upgrade -d #{database_connection} -v head "
-#  # We only do the sync the first time, and only if we're not doing HA or if we
-#  # are the founder of the HA cluster (so that it's really only done once).
-#  only_if do
-#    !node[:monasca][:db_synced] &&
-#      (!ha_enabled || CrowbarPacemakerHelper.is_cluster_founder?(node))
-#  end
-#end
+# execute "monasca-manage db upgrade" do
+#   user node[:monasca][:user]
+#   group node[:monasca][:group]
+#   command "monasca-manage db upgrade -d #{database_connection} -v head "
+#   # We only do the sync the first time, and only if we're not doing HA or if we
+#   # are the founder of the HA cluster (so that it's really only done once).
+#   only_if do
+#     !node[:monasca][:db_synced] &&
+#       (!ha_enabled || CrowbarPacemakerHelper.is_cluster_founder?(node))
+#   end
+# end
 
 # We want to keep a note that we've done db_sync, so we don't do it again.
 # If we were doing that outside a ruby_block, we would add the note in the
@@ -128,8 +123,8 @@ template "/etc/monasca/api-config.conf" do
   source "api-config.conf.erb"
   owner "root"
   ### FIXME: Uncomment once we have a package that creates a monasca group
-  #group node[:monasca][:group]
-  mode 0640
+  # group node[:monasca][:group]
+  mode 0o0640
   variables(
     database_connection: database_connection,
     keystone_settings: KeystoneHelper.keystone_settings(node, @cookbook_name),
@@ -139,18 +134,18 @@ end
 
 ### FIXME: Uncomment once we actually have a runnable WSGI app from a
 ###        monasca-api package
-#crowbar_openstack_wsgi "WSGI entry for monasca-api" do
-#  bind_host bind_host
-#  bind_port bind_port
-#  daemon_process "monasca-api"
-#  user node[:monasca][:user]
-#  group node[:monasca][:group]
-#  processes node[:monasca][:api][:processes]
-#  threads node[:monasca][:api][:threads]
-#end
+# crowbar_openstack_wsgi "WSGI entry for monasca-api" do
+#   bind_host bind_host
+#   bind_port bind_port
+#   daemon_process "monasca-api"
+#   user node[:monasca][:user]
+#   group node[:monasca][:group]
+#   processes node[:monasca][:api][:processes]
+#   threads node[:monasca][:api][:threads]
+# end
 #
-#apache_site "monasca-api.conf" do
-#  enable true
-#end
+# apache_site "monasca-api.conf" do
+#   enable true
+# end
 
 node.save

@@ -14,17 +14,19 @@
 #
 # TODO: Fill this with code that deploys the Monasca backend services
 
-keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name),
+### Example code for retrieving a database URL and keystone settings:
 
-db_settings = fetch_database_settings
-db_conn_scheme = db_settings[:url_scheme]
+# keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name),
 
-if db_settings[:backend_name] == "mysql"
-  db_conn_scheme = "mysql+pymysql"
-end
+# db_settings = fetch_database_settings
+# db_conn_scheme = db_settings[:url_scheme]
 
-database_connection = "#{db_conn_scheme}://" \
-  "#{node[:monasca][:db][:user]}" \
-  ":#{node[:monasca][:db][:password]}" \
-  "@#{db_settings[:address]}" \
-  "/#{node[:monasca][:db][:database]}"
+# if db_settings[:backend_name] == "mysql"
+#  db_conn_scheme = "mysql+pymysql"
+# end
+
+# database_connection = "#{db_conn_scheme}://" \
+# "#{node[:monasca][:db][:user]}" \
+# ":#{node[:monasca][:db][:password]}" \
+#  "@#{db_settings[:address]}" \
+#  "/#{node[:monasca][:db][:database]}"

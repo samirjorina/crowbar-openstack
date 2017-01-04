@@ -20,17 +20,20 @@
 ### FIXME: remove this once there is a package creating this directory
 
 directory "/etc/monasca/agent/" do
-  owner 'root'
-  group 'root'
-  mode 0755
+  owner "root"
+  group "root"
+  mode 0o755
   recursive true
-  notifies :create, 'template[/etc/monasca/agent/agent.yaml]'
+  notifies :create, "template[/etc/monasca/agent/agent.yaml]"
 end
 
 ### TODO:
-# * populate agent_settings with useful values for monasca_url and keystone settings
-# * generate per-node keystone credentials in crowbar_framework/app/models/monasca_service.rb 
-# * use credentials generated in the previous step to create a keystone account here (using keystone_register)
+# * populate agent_settings with useful values for monasca_url and keystone
+#   settings
+# * generate per-node keystone credentials in
+#   crowbar_framework/app/models/monasca_service.rb
+# * use credentials generated in the previous step to create a keystone account
+#   here (using keystone_register)
 
 agent_settings = node[:monasca][:agent][:config]
 
@@ -38,11 +41,11 @@ template "/etc/monasca/agent/agent.yaml" do
   source "agent.yaml.erb"
   owner "root"
   ### FIXME: Uncomment once we have a package that creates a monasca group
-  #group node[:monasca][:group]
-  mode 0640
+  # group node[:monasca][:group]
+  mode 0o640
   variables agent_settings
   ### FIXME: Uncomment once we have a package that creates a monasca-agent service
-  #notifies :reload, resources(service: "openstack-monasca-agent")
+  # notifies :reload, resources(service: "openstack-monasca-agent")
 end
 
 node.save
