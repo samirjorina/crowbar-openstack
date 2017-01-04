@@ -19,6 +19,9 @@ include_recipe "apache2::mod_wsgi"
 include_recipe "apache2::mod_rewrite"
 include_recipe "#{@cookbook_name}::common"
 
+application_path = "/srv/www/monasca-api"
+application_exec_path = "#{application_path}/app.wsgi"
+
 apache_module "deflate" do
   conf false
   enable true
@@ -31,7 +34,9 @@ end
 ### TODO: uncomment this once there is a package.
 # package "openstack-monasca-api"
 
+
 ### FIXME: remove this once there is a package creating this directory
+
 
 directory "/etc/monasca/" do
   owner "root"
@@ -134,18 +139,18 @@ end
 
 ### FIXME: Uncomment once we actually have a runnable WSGI app from a
 ###        monasca-api package
-# crowbar_openstack_wsgi "WSGI entry for monasca-api" do
-#   bind_host bind_host
-#   bind_port bind_port
-#   daemon_process "monasca-api"
-#   user node[:monasca][:user]
-#   group node[:monasca][:group]
-#   processes node[:monasca][:api][:processes]
-#   threads node[:monasca][:api][:threads]
-# end
+#crowbar_openstack_wsgi "WSGI entry for monasca-api" do
+#  bind_host bind_host
+#  bind_port bind_port
+#  daemon_process "monasca-api"
+#  user node[:monasca][:user]
+#  group node[:monasca][:group]
+#  processes node[:monasca][:api][:processes]
+#  threads node[:monasca][:api][:threads]
+#end
 #
-# apache_site "monasca-api.conf" do
-#   enable true
-# end
+#apache_site "monasca-api.conf" do
+#  enable true
+#end
 
 node.save
