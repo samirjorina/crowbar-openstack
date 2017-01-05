@@ -15,6 +15,6 @@
 #
 
 if CrowbarRoleRecipe.node_state_valid_for_role?(node, "monasca", "monasca-server")
-  include_recipe "monasca::backend"
+  include_recipe "monasca::server"
   include_recipe "monasca::api"
 end
