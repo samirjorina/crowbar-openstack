@@ -79,3 +79,9 @@ keystone_register "register monasca api endpoint" do
   endpoint_internalURL MonascaHelper.api_internal_url(node)
   action :add_endpoint_template
 end
+
+ha_enabled = node[:monasca][:ha][:enabled]
+
+if ha_enabled
+  include_recipe "monasca::ha"
+end

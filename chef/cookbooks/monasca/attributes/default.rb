@@ -52,3 +52,8 @@ default[:monasca][:log_agent][:service_name] = monasca_log_agent_service_name
 default[:monasca][:log_agent][:user] = "monasca-log-agent"
 default[:monasca][:log_agent][:group] = "logstash"
 default[:monasca][:log_agent][:debug] = monasca_debug
+
+default[:monasca][:ha][:enabled] = false
+# Ports to bind to when haproxy is used for the real ports
+default[:monasca][:ha][:ports][:plain] = 5580
+default[:monasca][:ha][:ports][:ssl] = 5581
