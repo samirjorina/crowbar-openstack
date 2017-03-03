@@ -59,6 +59,7 @@ hosts_template =
      "cmm-hosts-single.erb"
   else
     "cmm-hosts-cluster.erb"
+  end
 
 template "/opt/fujitsu/monasca-installer/cmm-hosts" do
   source hosts_template
