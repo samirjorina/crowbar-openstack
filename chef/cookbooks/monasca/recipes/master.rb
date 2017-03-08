@@ -14,30 +14,16 @@
 # limitation.
 
 package "ansible"
+package "monasca-installer"
 
-keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
-
-directory "/opt/fujitsu" do
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
-# TODO: use package "monasca-installer"
-remote_file "/opt/fujitsu/cmm-suse.tgz" do
-  source node[:monasca][:master][:cmm_tarball_url]
+cookbook_file "/etc/ansible/ansible.cfg" do
+  source "ansible.cfg"
   owner "root"
   group "root"
   mode "0644"
-  action :create_if_missing
 end
 
-execute "extract cmm tarball" do
-  command "tar xf cmm-suse.tgz"
-  cwd "/opt/fujitsu/"
-  not_if { Dir.exist?("/opt/fujitsu/monasca-installer") }
-  notifies :run, "execute[run ansible]", :delayed
-end
+keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
 
 template "/opt/fujitsu/monasca-installer/credentials.yml" do
   source "credentials.yml.erb"
