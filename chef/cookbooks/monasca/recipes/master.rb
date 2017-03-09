@@ -80,7 +80,8 @@ ansible_vars = {
   database_monapi_password: node[:monasca][:master][:database_monapi_password],
   database_thresh_password: node[:monasca][:master][:database_thresh_password],
   database_logapi_password: node[:monasca][:master][:database_logapi_password],
-  keystone_cmm_operator_user_password: node[:monasca][:master][:keystone_cmm_operator_user_password],
+  keystone_cmm_operator_user_password:
+    node[:monasca][:master][:keystone_cmm_operator_user_password],
   keystone_cmm_agent_password: node[:monasca][:master][:keystone_cmm_agent_password],
   keystone_admin_agent_password: node[:monasca][:master][:keystone_admin_agent_password],
   keystone_admin_password: keystone_settings["admin_password"],
