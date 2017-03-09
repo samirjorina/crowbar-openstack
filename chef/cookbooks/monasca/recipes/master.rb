@@ -24,18 +24,6 @@ cookbook_file "/etc/ansible/ansible.cfg" do
 end
 
 keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
-
-template "/opt/fujitsu/monasca-installer/credentials.yml" do
-  source "credentials.yml.erb"
-  owner "root"
-  group "root"
-  mode "0600"
-  variables(
-    keystone_settings: keystone_settings
-  )
-  notifies :run, "execute[run ansible]", :delayed
-end
-
 monasca_hosts = MonascaHelper.monasca_hosts(search(:node, "roles:monasca-server"))
 
 raise "no nodes with monasca-server role found" if monasca_hosts.nil? or monasca_hosts.empty?
@@ -85,9 +73,23 @@ file "/opt/fujitsu/monasca-installer/.installed" do
   action :create_if_missing
 end
 
+ansible_vars = {
+  :influxdb_mon_api_password => node[:monasca][:master][:influxdb_mon_api_password],
+  :influxdb_mon_persister_password => node[:monasca][:master][:influxdb_mon_persister_password],
+  :database_notification_password => node[:monasca][:master][:database_notification_password],
+  :database_monapi_password => node[:monasca][:master][:database_monapi_password],
+  :database_thresh_password => node[:monasca][:master][:database_thresh_password],
+  :database_logapi_password => node[:monasca][:master][:database_logapi_password],
+  :keystone_cmm_operator_user_password => node[:monasca][:master][:keystone_cmm_operator_user_password],
+  :keystone_cmm_agent_password => node[:monasca][:master][:keystone_cmm_agent_password],
+  :keystone_admin_agent_password => node[:monasca][:master][:keystone_admin_agent_password],
+  :keystone_admin_password => keystone_settings["admin_password"],
+  :database_grafana_password => node[:monasca][:master][:database_grafana_password]
+}.to_json
+
 execute "run ansible" do
   command "rm -f /opt/fujitsu/monasca-installer/.installed"\
-          "&& ansible-playbook -i cmm-hosts monasca.yml"\
+          "&& ansible-playbook -i cmm-hosts -e '#{ansible_vars}' main.yml"\
           "&& touch /opt/fujitsu/monasca-installer/.installed"
   cwd "/opt/fujitsu/monasca-installer"
   action :nothing
