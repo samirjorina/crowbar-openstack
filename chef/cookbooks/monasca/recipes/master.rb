@@ -73,6 +73,10 @@ file "/opt/fujitsu/monasca-installer/.installed" do
   action :create_if_missing
 end
 
+monasca_node = search(:node, "roles:monasca-server")[0]
+cmm_net_ip = MonascaHelper.get_host_for_monitoring_url(monasca_node)
+pub_net_ip = CrowbarHelper.get_host_for_public_url(monasca_node, false, false)
+
 ansible_vars = {
   influxdb_mon_api_password: node[:monasca][:master][:influxdb_mon_api_password],
   influxdb_mon_persister_password: node[:monasca][:master][:influxdb_mon_persister_password],
@@ -85,7 +89,29 @@ ansible_vars = {
   keystone_cmm_agent_password: node[:monasca][:master][:keystone_cmm_agent_password],
   keystone_admin_agent_password: node[:monasca][:master][:keystone_admin_agent_password],
   keystone_admin_password: keystone_settings["admin_password"],
-  database_grafana_password: node[:monasca][:master][:database_grafana_password]
+  database_grafana_password: node[:monasca][:master][:database_grafana_password],
+
+  memcached_listen_ip: cmm_net_ip,
+  kafka_host: cmm_net_ip,
+  kibana_host: pub_net_ip,
+  log_api_bind_host: pub_net_ip,
+  influxdb_bind_address: cmm_net_ip,
+  monasca_api_bind_host: pub_net_ip,
+#  grafana_server_http_addr: pub_net_ip,
+#  grafana_server_domain: pub_net_ip,
+#  grafana_database_host":"192.168.10.12:3306",
+  elasticsearch_host: cmm_net_ip,
+  nimbus_host: cmm_net_ip,
+  zookeeper_hosts: cmm_net_ip,
+  kafka_hosts: cmm_net_ip,
+  mariadb_bind_address: cmm_net_ip,
+  database_host: cmm_net_ip,
+  monasca_api_url: "http://#{pub_net_ip}:8070/v2.0",
+  monasca_log_api_url: "http://#{pub_net_ip}:5607/v2.0",
+  memcached_nodes: "#{cmm_net_ip}:11211",
+  influxdb_url:"#{cmm_net_ip}:8086",
+  elasticsearch_nodes: "[#{cmm_net_ip}]",
+  elasticsearch_hosts: cmm_net_ip,
 }.to_json
 
 execute "run ansible" do
