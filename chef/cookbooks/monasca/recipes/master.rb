@@ -97,21 +97,19 @@ ansible_vars = {
   log_api_bind_host: pub_net_ip,
   influxdb_bind_address: cmm_net_ip,
   monasca_api_bind_host: pub_net_ip,
-#  grafana_server_http_addr: pub_net_ip,
-#  grafana_server_domain: pub_net_ip,
-#  grafana_database_host":"192.168.10.12:3306",
   elasticsearch_host: cmm_net_ip,
   nimbus_host: cmm_net_ip,
   zookeeper_hosts: cmm_net_ip,
-  kafka_hosts: cmm_net_ip,
+  kafka_hosts: "#{cmm_net_ip}:9092",
   mariadb_bind_address: cmm_net_ip,
   database_host: cmm_net_ip,
   monasca_api_url: "http://#{pub_net_ip}:8070/v2.0",
   monasca_log_api_url: "http://#{pub_net_ip}:5607/v2.0",
   memcached_nodes: "#{cmm_net_ip}:11211",
-  influxdb_url:"#{cmm_net_ip}:8086",
+  influxdb_url: "#{cmm_net_ip}:8086",
   elasticsearch_nodes: "[#{cmm_net_ip}]",
   elasticsearch_hosts: cmm_net_ip,
+  memcached_listen_ip: cmm_net_ip
 }.to_json
 
 execute "run ansible" do
