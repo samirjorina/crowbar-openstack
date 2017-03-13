@@ -108,8 +108,7 @@ ansible_vars = {
   memcached_nodes: "#{cmm_net_ip}:11211",
   influxdb_url: "#{cmm_net_ip}:8086",
   elasticsearch_nodes: "[#{cmm_net_ip}]",
-  elasticsearch_hosts: cmm_net_ip,
-  memcached_listen_ip: cmm_net_ip
+  elasticsearch_hosts: cmm_net_ip
 }.to_json
 
 execute "run ansible" do

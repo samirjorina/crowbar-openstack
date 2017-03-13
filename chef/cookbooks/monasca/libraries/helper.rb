@@ -54,6 +54,4 @@ module MonascaHelper
   def self.get_host_for_monitoring_url(node)
     Chef::Recipe::Barclamp::Inventory.get_network_by_type(node, "monitoring").address
   end
-
-
 end
