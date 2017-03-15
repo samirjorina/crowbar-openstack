@@ -35,7 +35,7 @@ hosts_template =
     "cmm-hosts-cluster.erb"
   end
 
-template "/opt/fujitsu/monasca-installer/cmm-hosts" do
+template "/opt/monasca-installer/cmm-hosts" do
   source hosts_template
   owner "root"
   group "root"
@@ -50,7 +50,7 @@ template "/opt/fujitsu/monasca-installer/cmm-hosts" do
   notifies :run, "execute[run ansible]", :delayed
 end
 
-template "/opt/fujitsu/monasca-installer/group_vars/all_group" do
+template "/opt/monasca-installer/group_vars/all_group" do
   source "all_group.erb"
   owner "root"
   group "root"
@@ -64,7 +64,7 @@ end
 # This file is used to mark that ansible installer run successfully.
 # Without this, it could happen that the installer was not re-tried
 # after a failed run.
-file "/opt/fujitsu/monasca-installer/.installed" do
+file "/opt/monasca-installer/.installed" do
   content "cmm installed"
   owner "root"
   group "root"
@@ -106,15 +106,15 @@ ansible_vars = {
   monasca_api_url: "http://#{pub_net_ip}:8070/v2.0",
   monasca_log_api_url: "http://#{pub_net_ip}:5607/v2.0",
   memcached_nodes: "#{cmm_net_ip}:11211",
-  influxdb_url: "#{cmm_net_ip}:8086",
+  influxdb_url: "http://#{cmm_net_ip}:8086",
   elasticsearch_nodes: "[#{cmm_net_ip}]",
   elasticsearch_hosts: cmm_net_ip
 }.to_json
 
 execute "run ansible" do
-  command "rm -f /opt/fujitsu/monasca-installer/.installed"\
+  command "rm -f /opt/monasca-installer/.installed"\
           "&& ansible-playbook -i cmm-hosts -e '#{ansible_vars}' monasca.yml"\
-          "&& touch /opt/fujitsu/monasca-installer/.installed"
-  cwd "/opt/fujitsu/monasca-installer"
+          "&& touch /opt/monasca-installer/.installed"
+  cwd "/opt/monasca-installer"
   action :nothing
 end
