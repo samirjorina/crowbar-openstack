@@ -113,7 +113,7 @@ ansible_vars = {
 
 execute "run ansible" do
   command "rm -f /opt/fujitsu/monasca-installer/.installed"\
-          "&& ansible-playbook -i cmm-hosts -e '#{ansible_vars}' main.yml"\
+          "&& ansible-playbook -i cmm-hosts -e '#{ansible_vars}' monasca.yml"\
           "&& touch /opt/fujitsu/monasca-installer/.installed"
   cwd "/opt/fujitsu/monasca-installer"
   action :nothing
