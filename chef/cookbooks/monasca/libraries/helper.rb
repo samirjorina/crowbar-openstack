@@ -72,22 +72,4 @@ module MonascaHelper
   def self.get_host_for_monitoring_url(node)
     Chef::Recipe::Barclamp::Inventory.get_network_by_type(node, "monitoring").address
   end
-
-  def self.api_admin_url(node)
-    host = monasca_admin_host(node)
-    # SSL is not supported at this moment
-    # protocol = node[:monasca][:api][:ssl] ? "https" : "http"
-    protocol = "http"
-    port = node[:monasca][:api][:bind_port]
-    "#{protocol}://#{host}:#{port}/v2.0"
-  end
-
-  def self.api_internal_url(node)
-    host = get_host_for_monitoring_url(node)
-    # SSL is not supported at this moment
-    # protocol = node[:monasca][:api][:ssl] ? "https" : "http"
-    protocol = "http"
-    port = node[:monasca][:api][:bind_port]
-    "#{protocol}://#{host}:#{port}/v2.0"
-  end
 end
