@@ -23,7 +23,8 @@
         "max_buffer_size": 1000,
         "max_measurement_buffer_size": -1,
         "backlog_send_rate": 1000,
-        "amplifier": 0
+        "amplifier": 0,
+        "agent_service_name": "openstack-monasca-agent"
       },
       "log_agent": {
         "keystone": {

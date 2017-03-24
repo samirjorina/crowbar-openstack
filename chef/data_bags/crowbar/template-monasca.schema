@@ -39,7 +39,8 @@
                 "max_buffer_size": { "type": "int", "required": true },
                 "max_measurement_buffer_size": { "type": "int", "required": true },
                 "backlog_send_rate": { "type": "int", "required": true },
-                "amplifier": { "type": "int", "required": true }
+                "amplifier": { "type": "int", "required": true },
+                "agent_service_name": { "type": "str", "required": true }
               }
             },
             "log_agent": {
