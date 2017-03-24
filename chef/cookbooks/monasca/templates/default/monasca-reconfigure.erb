@@ -30,4 +30,5 @@
     --backlog_send_rate '<%= @agent_settings["backlog_send_rate"].to_i %>' \
     --amplifier '<%= @agent_settings["amplifier"] %>' \
     --skip_enable \
-    <% if @install_plugins_only -%> --install_plugins_only <% end -%>
+    <% if @install_plugins_only -%> --install_plugins_only <% end -%> \
+    --agent_service_name '<%= @agent_settings["agent_service_name"] %>'
