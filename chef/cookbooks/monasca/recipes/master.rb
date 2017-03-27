@@ -96,6 +96,7 @@ ansible_vars = {
   kibana_host: pub_net_ip,
   log_api_bind_host: pub_net_ip,
   influxdb_bind_address: cmm_net_ip,
+  influxdb_host: cmm_net_ip,
   monasca_api_bind_host: pub_net_ip,
   elasticsearch_host: cmm_net_ip,
   nimbus_host: cmm_net_ip,
