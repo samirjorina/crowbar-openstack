@@ -4,13 +4,8 @@
     -u '<%= @agent_keystone["service_user"] %>' \
     -p '<%= @agent_keystone["service_password"] %>' \
     --project_name '<%= @agent_keystone["service_tenant"] %>' \
-    --project_id '<%= @agent_keystone["service_tenant"] %>' \
     <% if defined?(@service) -%> --service '<%= @service %>' <% end -%> \
-    --keystone_url '<%= @keystone_settings["internal_auth_url"] %>' \
-    --user_domain_id '<%= @keystone_settings["admin_domain_id"] %>' \
-    --user_domain_name '<%= @keystone_settings["admin_domain"] %>' \
-    --project_domain_id '<%= @keystone_settings["admin_domain_id"] %>' \
-    --project_domain_name '<%= @keystone_settings["admin_domain"] %>' \
+    --keystone_url '<%= @keystone_settings["admin_auth_url"] %>/v3' \
     --monasca_url '<%= @monasca_api_url %>' \
     --user '<%= @agent_settings["user"] %>' \
     --dimensions '<%= @agent_dimensions.map{|k,v| "#{k}:#{v}"}.join(',') %>' \
