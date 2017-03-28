@@ -39,12 +39,12 @@ file "/etc/apache2/vhosts.d/grafana.conf" do
 end
 
 template "/srv/www/grafana/config.js" do
-  source "grfana-config.js"
+  source "grafana-config.js"
   variables(
     api_url: MonascaUiHelper.api_public_url(monasca_server)
   )
   owner "root"
-  group "root"
+  group "www"
   mode "0644"
   notifies :reload, resources(service: "apache2")
 end

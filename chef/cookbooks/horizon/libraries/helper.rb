@@ -27,5 +27,4 @@ module MonascaUiHelper
     port = node[:monasca][:api][:bind_port]
     "#{protocol}://#{host}:#{port}/v2.0"
   end
-
 end
