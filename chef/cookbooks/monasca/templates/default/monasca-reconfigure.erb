@@ -18,6 +18,7 @@
     <% if @agent_settings["system_only"] -%> --system_only <% end -%> \
     <% if @agent_settings["overwrite_config"] -%> --overwrite <% end -%> \
     <% if @agent_settings["ca_file"].length > 0 -%> --ca_file '<%= @agent_settings["ca_file"] %>' <% end -%> \
+    --log_dir '<%= @agent_settings["log_dir"] %>' \
     --log_level '<%= @agent_settings["log_level"] %>' \
     --monasca_statsd_port '<%= @agent_settings["statsd_port"].to_i %>' \
     --check_frequency '<%= @agent_settings["check_frequency"].to_i %>' \

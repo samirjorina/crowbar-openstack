@@ -30,6 +30,7 @@
                 "system_only": { "type": "bool", "required": true },
                 "overwrite_config": { "type": "bool", "required": true },
                 "ca_file": { "type": "str", "required": true },
+                "log_dir": { "type": "str", "required": true },
                 "log_level": { "type": "str", "required": true },
                 "statsd_port": { "type": "int", "required": true },
                 "check_frequency": { "type": "int", "required": true },
