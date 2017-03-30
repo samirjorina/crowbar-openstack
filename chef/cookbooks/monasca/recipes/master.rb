@@ -26,16 +26,16 @@ end
 keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
 monasca_hosts = MonascaHelper.monasca_hosts(search(:node, "roles:monasca-server"))
 
-raise "no nodes with monasca-server role found" if monasca_hosts.nil? or monasca_hosts.empty?
+raise "no nodes with monasca-server role found" if monasca_hosts.nil? || monasca_hosts.empty?
 
 hosts_template =
   if monasca_hosts.length == 1
-    "cmm-hosts-single.erb"
+    "monasca-hosts-single.erb"
   else
-    "cmm-hosts-cluster.erb"
+    "monasca-hosts-cluster.erb"
   end
 
-template "/opt/monasca-installer/cmm-hosts" do
+template "/opt/monasca-installer/monasca-hosts" do
   source hosts_template
   owner "root"
   group "root"
@@ -113,7 +113,7 @@ ansible_vars = {
 
 execute "run ansible" do
   command "rm -f /opt/monasca-installer/.installed"\
-          "&& ansible-playbook -i cmm-hosts -e '#{ansible_vars}' monasca.yml"\
+          "&& ansible-playbook -i monasca-hosts -e '#{ansible_vars}' monasca.yml"\
           "&& touch /opt/monasca-installer/.installed"
   cwd "/opt/monasca-installer"
   action :nothing
