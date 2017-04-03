@@ -20,6 +20,7 @@ agent_settings = node[:monasca][:metric_agent]
 agent_keystone = agent_settings[:keystone]
 
 keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
+ha_enabled = node[:monasca][:ha][:enabled]
 
 monasca_server = node_search_with_cache("roles:monasca-server").first
 if monasca_server.nil?
@@ -66,7 +67,7 @@ service "monasca-agent" do
   supports status: true, restart: true, start: true, stop: true
   action [:enable, :start]
   ignore_failure true
-  # provider Chef::Provider::CrowbarPacemakerService if ha_enabled
+  provider Chef::Provider::CrowbarPacemakerService if ha_enabled
 end
 
 node.save

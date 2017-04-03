@@ -42,8 +42,21 @@
         "threads": 10
       },
       "log_api": {
-        "port": 5607,
+        "bind_host": "*",
+        "bind_port": 5607,
         "ssl": false
+      },
+      "kibana": {
+        "bind_host": "*",
+        "bind_port": 5601
+      },
+      "mariadb": {
+        "bind_host": "-",
+        "bind_port": 3306
+      },
+      "influxdb": {
+        "bind_host": "-",
+        "bind_port": 8086
       },
       "master": {
         "influxdb_mon_api_password": "",

@@ -36,9 +36,6 @@ override[:monasca][:group] = "monasca"
 override[:monasca][:user] = "monasca"
 
 default[:monasca][:debug] = monasca_debug
-default[:monasca][:ha][:enabled] = monasca_ha_enabled
-
-default[:monasca][:api][:bind_host] = "*"
 
 # metric-agent default service settings
 default[:monasca][:metric_agent][:service_name] = monasca_metric_agent_service_name
@@ -53,7 +50,18 @@ default[:monasca][:log_agent][:user] = "monasca-log-agent"
 default[:monasca][:log_agent][:group] = "logstash"
 default[:monasca][:log_agent][:debug] = monasca_debug
 
-default[:monasca][:ha][:enabled] = false
+# default[:monasca][:api][:bind_host] = "*"
+# default[:monasca][:log_api][:bind_host] = "*"
+# default[:monasca][:kibana][:bind_host] = "*"
+# default[:monasca][:mariadb][:bind_host] = "-"
+# default[:monasca][:influxdb][:bind_host] = "-"
+
+default[:monasca][:ha][:enabled] = monasca_ha_enabled
 # Ports to bind to when haproxy is used for the real ports
-default[:monasca][:ha][:ports][:plain] = 5580
-default[:monasca][:ha][:ports][:ssl] = 5581
+# Public network
+default[:monasca][:ha][:ports][:api] = 18070
+default[:monasca][:ha][:ports][:log_api] = 15607
+default[:monasca][:ha][:ports][:kibana] = 15601
+# Internal network
+default[:monasca][:ha][:ports][:mariadb] = 13306
+default[:monasca][:ha][:ports][:influxdb] = 18086

@@ -74,8 +74,33 @@
               "required": true,
               "type": "map",
               "mapping": {
-                "port": { "required": true, "type": "int" },
+                "bind_host": { "required": true, "type": "str" },
+                "bind_port": { "required": true, "type": "int" },
                 "ssl": { "required": true, "type": "bool" }
+              }
+            },
+            "kibana": {
+              "required": true,
+              "type": "map",
+              "mapping": {
+                "bind_host": { "required": true, "type": "str" },
+                "bind_port": { "required": true, "type": "int" }
+              }
+            },
+            "mariadb": {
+              "required": true,
+              "type": "map",
+              "mapping": {
+                "bind_host": { "required": true, "type": "str" },
+                "bind_port": { "required": true, "type": "int" }
+              }
+            },
+            "influxdb": {
+              "required": true,
+              "type": "map",
+              "mapping": {
+                "bind_host": { "required": true, "type": "str" },
+                "bind_port": { "required": true, "type": "int" }
               }
             },
             "master": {

@@ -15,5 +15,6 @@
 #
 
 if CrowbarRoleRecipe.node_state_valid_for_role?(node, "monasca", "monasca-master")
-  include_recipe "monasca::master"
+  include_recipe "#{@cookbook_name}::master"
+  include_recipe "#{@cookbook_name}::ha"
 end

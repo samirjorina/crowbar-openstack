@@ -82,6 +82,4 @@ end
 
 ha_enabled = node[:monasca][:ha][:enabled]
 
-if ha_enabled
-  include_recipe "monasca::ha"
-end
+include_recipe "monasca::ha" if ha_enabled

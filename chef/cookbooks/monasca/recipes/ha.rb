@@ -13,13 +13,49 @@
 # limitations under the License.
 #
 
+unless node[:monasca][:ha][:enabled]
+  log "HA support for Monasca is not enabled"
+  return
+end
+
+log "Setting up Monasca HA support"
+
+network_settings = MonascaHelper.network_settings(node)
+
 include_recipe "crowbar-pacemaker::haproxy"
 
-haproxy_loadbalancer "monasca" do
-  address "0.0.0.0"
-  port 1234
-  use_ssl false
-  servers CrowbarPacemakerHelper.haproxy_servers_for_service(node, "monasca", "monasca-server", "plain")
+haproxy_loadbalancer "monasca-api" do
+  address network_settings[:api][:ha_bind_host]
+  port network_settings[:api][:ha_bind_port]
+  servers CrowbarPacemakerHelper.haproxy_servers_for_service(node, "monasca", "monasca-server", "monasca_api")
+  action :nothing
+end.run_action(:create)
+
+haproxy_loadbalancer "monasca-log-api" do
+  address network_settings[:log_api][:ha_bind_host]
+  port network_settings[:log_api][:ha_bind_port]
+  servers CrowbarPacemakerHelper.haproxy_servers_for_service(node, "monasca", "monasca-server", "monasca_log_api")
+  action :nothing
+end.run_action(:create)
+
+haproxy_loadbalancer "kibana" do
+  address network_settings[:kibana][:ha_bind_host]
+  port network_settings[:kibana][:ha_bind_port]
+  servers CrowbarPacemakerHelper.haproxy_servers_for_service(node, "monasca", "monasca-server", "kibana")
+  action :nothing
+end.run_action(:create)
+
+haproxy_loadbalancer "mariadb" do
+  address network_settings[:mariadb][:ha_bind_host]
+  port network_settings[:mariadb][:ha_bind_port]
+  servers CrowbarPacemakerHelper.haproxy_servers_for_service(node, "monasca", "monasca-server", "mariadb")
+  action :nothing
+end.run_action(:create)
+
+haproxy_loadbalancer "influxdb" do
+  address network_settings[:influxdb][:ha_bind_host]
+  port network_settings[:influxdb][:ha_bind_port]
+  servers CrowbarPacemakerHelper.haproxy_servers_for_service(node, "monasca", "monasca-server", "influxdb")
   action :nothing
 end.run_action(:create)
 
