@@ -31,19 +31,19 @@ class MonascaService < PacemakerServiceObject
       {
         "monasca-metric-agent" => {
           "unique" => false,
-          "admin" => true,
+          "admin" => false,
           "count" => -1,
           "exclude_platform" => {
-            "suse" => "< 12.1",
+            "suse" => "< 12.2",
             "windows" => "/.*/"
           }
         },
         "monasca-log-agent" => {
           "unique" => false,
-          "admin" => true,
+          "admin" => false,
           "count" => -1,
           "exclude_platform" => {
-            "suse" => "< 12.1",
+            "suse" => "< 12.2",
             "windows" => "/.*/"
           }
         },
@@ -56,7 +56,7 @@ class MonascaService < PacemakerServiceObject
           "cluster" => false,
           "admin" => false,
           "exclude_platform" => {
-            "suse" => "< 12.1",
+            "suse" => "< 12.2",
             "windows" => "/.*/"
           }
         },
@@ -66,7 +66,7 @@ class MonascaService < PacemakerServiceObject
           "cluster" => false,
           "admin" => true,
           "exclude_platform" => {
-            "suse" => "< 12.1",
+            "suse" => "< 12.2",
             "windows" => "/.*/"
           }
         }

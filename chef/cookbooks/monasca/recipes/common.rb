@@ -107,7 +107,6 @@ unless agents_settings.empty?
       role_name as_service_role
       action :add_access
     end
-
   end
 end
 ### recipes specific keystone handling
