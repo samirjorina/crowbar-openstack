@@ -49,11 +49,8 @@ class MonascaService < PacemakerServiceObject
         },
         "monasca-server" => {
           "unique" => false,
-          # TODO: change for cluster
-          # "count" => -1,
-          # "cluster" => true,
-          "count" => 1,
-          "cluster" => false,
+          "count" => -1,
+          "cluster" => true,
           "admin" => false,
           "exclude_platform" => {
             "suse" => "< 12.2",
@@ -135,12 +132,11 @@ class MonascaService < PacemakerServiceObject
   def validate_proposal_after_save(proposal)
     validate_one_for_role proposal, "monasca-master"
     validate_one_for_role proposal, "monasca-server"
-    # TODO: uncomment for cluster support
-    # nodes = proposal["deployment"][@bc_name]["elements"]
-    # if !nodes.key?("monasca-server") ||
-    #     (nodes["monasca-server"].length != 1 && nodes["monasca-server"].length != 3)
-    #   validation_error("Need either one or three monasca-server node(s).")
-    # end
+    nodes = proposal["deployment"][@bc_name]["elements"]
+    if !nodes.key?("monasca-server") ||
+        (nodes["monasca-server"].length != 1 && nodes["monasca-server"].length != 3)
+      validation_error("Need either one or three monasca-server node(s).")
+    end
     super
   end
 
