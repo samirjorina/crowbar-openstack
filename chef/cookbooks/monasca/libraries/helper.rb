@@ -83,10 +83,10 @@ module MonascaHelper
       end
 
       if node[:monasca][:ha][:enabled]
-        bind_port_api = node[:monasca][:ha][:ports][:api].to_i,
-        bind_port_log_api = node[:monasca][:ha][:ports][:log_api].to_i,
-        bind_port_kibana = node[:monasca][:ha][:ports][:kibana].to_i,
-        bind_port_mariadb = node[:monasca][:ha][:ports][:mariadb].to_i,
+        bind_port_api = node[:monasca][:ha][:ports][:api].to_i
+        bind_port_log_api = node[:monasca][:ha][:ports][:log_api].to_i
+        bind_port_kibana = node[:monasca][:ha][:ports][:kibana].to_i
+        bind_port_mariadb = node[:monasca][:ha][:ports][:mariadb].to_i
         bind_port_influxdb = node[:monasca][:ha][:ports][:influxdb].to_i
       else
         bind_port_api = node[:monasca][:api][:bind_port].to_i
@@ -127,7 +127,7 @@ module MonascaHelper
           bind_port: bind_port_influxdb,
           ha_bind_host: node[:monasca][:influxdb][:bind_host] == "*" ? "0.0.0.0" : @cluster_admin_ip,
           ha_bind_port: node[:monasca][:influxdb][:bind_port].to_i
-        },
+        }
       }
     end
   end
