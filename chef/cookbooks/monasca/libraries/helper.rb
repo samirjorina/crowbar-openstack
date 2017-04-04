@@ -104,46 +104,43 @@ module MonascaHelper
         bind_port_influxdb_relay = node[:monasca][:influxdb][:influxdb_relay].to_i
       end
 
+      is_public_api = node[:monasca][:api][:bind_host] == "*"
+      is_public_log_api = node[:monasca][:log_api][:bind_host] == "*"
+      is_public_kibana = node[:monasca][:kibana][:bind_host] == "*"
+      is_public_mariadb = node[:monasca][:mariadb][:bind_host] == "*"
+      is_public_influxdb = node[:monasca][:influxdb][:bind_host] == "*"
+      is_public_influxdb_relay = node[:monasca][:influxdb_relay][:bind_host] == "*"
+
       @network_settings ||= {
         ip: @ip,
 
         api: {
           bind_port: bind_port_api,
-          ha_bind_host: node[:monasca][:api][:bind_host] == "*" ?
-            "0.0.0.0" :
-            @cluster_monitoring_ip,
+          ha_bind_host: is_public_api ? "0.0.0.0" : @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:api][:bind_port].to_i
         },
 
         log_api: {
           bind_port: bind_port_log_api,
-          ha_bind_host: node[:monasca][:log_api][:bind_host] == "*" ?
-            "0.0.0.0" :
-            @cluster_monitoring_ip,
+          ha_bind_host: is_public_log_api ? "0.0.0.0" : @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:log_api][:bind_port].to_i
         },
 
         kibana: {
           bind_port: bind_port_kibana,
-          ha_bind_host: node[:monasca][:kibana][:bind_host] == "*" ?
-            "0.0.0.0" :
-            @cluster_monitoring_ip,
+          ha_bind_host: is_public_kibana ? "0.0.0.0" : @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:kibana][:bind_port].to_i
         },
 
         mariadb: {
           bind_port: bind_port_mariadb,
-          ha_bind_host: node[:monasca][:mariadb][:bind_host] == "*" ?
-            "0.0.0.0" :
-            @cluster_monitoring_ip,
+          ha_bind_host: is_public_mariadb ? "0.0.0.0" : @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:mariadb][:bind_port].to_i
         },
 
         influxdb: {
           bind_port: bind_port_influxdb,
-          ha_bind_host: node[:monasca][:influxdb][:bind_host] == "*" ?
-            "0.0.0.0" :
-            @cluster_monitoring_ip,
+          ha_bind_host: is_public_influxdb ? "0.0.0.0" : @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:influxdb][:bind_port].to_i
         },
 
@@ -152,9 +149,7 @@ module MonascaHelper
         # should be relayed to InfluxDB Relay
         influxdb_relay: {
           bind_port: bind_port_influxdb_relay,
-          ha_bind_host: node[:monasca][:influxdb_relay][:bind_host] == "*" ?
-            "0.0.0.0" :
-            @cluster_monitoring_ip,
+          ha_bind_host: is_public_influxdb_relay ? "0.0.0.0" : @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:influxdb_relay][:bind_port].to_i
         }
       }
