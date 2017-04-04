@@ -65,3 +65,4 @@ default[:monasca][:ha][:ports][:kibana] = 15601
 # Internal network
 default[:monasca][:ha][:ports][:mariadb] = 13306
 default[:monasca][:ha][:ports][:influxdb] = 18086
+default[:monasca][:ha][:ports][:influxdb_relay] = 19096

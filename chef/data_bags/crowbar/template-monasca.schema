@@ -103,6 +103,14 @@
                 "bind_port": { "required": true, "type": "int" }
               }
             },
+            "influxdb_relay": {
+              "required": true,
+              "type": "map",
+              "mapping": {
+                "bind_host": { "required": true, "type": "str" },
+                "bind_port": { "required": true, "type": "int" }
+              }
+            },
             "master": {
               "required": true,
               "type": "map",

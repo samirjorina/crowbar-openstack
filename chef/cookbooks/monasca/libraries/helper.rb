@@ -71,15 +71,21 @@ module MonascaHelper
     end
 
     def get_host_for_monitoring_url(node)
-      Chef::Recipe::Barclamp::Inventory.get_network_by_type(node, "monitoring").address
+      Chef::Recipe::Barclamp::Inventory.get_network_by_type(
+        node, "monitoring"
+      ).address
     end
 
     def network_settings(node)
-      @ip ||= Chef::Recipe::Barclamp::Inventory.get_network_by_type(node, "monitoring").address
-      @cluster_admin_ip ||= nil
+      @ip ||= Chef::Recipe::Barclamp::Inventory.get_network_by_type(
+        node, "monitoring"
+      ).address
+      @cluster_monitoring_ip ||= nil
 
-      if node[:monasca][:ha][:enabled] && !@cluster_admin_ip
-        @cluster_admin_ip = CrowbarPacemakerHelper.cluster_vip(node, "monitoring")
+      if node[:monasca][:ha][:enabled] && !@cluster_monitoring_ip
+        @cluster_monitoring_ip = CrowbarPacemakerHelper.cluster_vip(
+          node, "monitoring"
+        )
       end
 
       if node[:monasca][:ha][:enabled]
@@ -88,12 +94,14 @@ module MonascaHelper
         bind_port_kibana = node[:monasca][:ha][:ports][:kibana].to_i
         bind_port_mariadb = node[:monasca][:ha][:ports][:mariadb].to_i
         bind_port_influxdb = node[:monasca][:ha][:ports][:influxdb].to_i
+        bind_port_influxdb_relay = node[:monasca][:ha][:ports][:influxdb_relay].to_i
       else
         bind_port_api = node[:monasca][:api][:bind_port].to_i
         bind_port_log_api = node[:monasca][:log_api][:bind_port].to_i
         bind_port_kibana = node[:monasca][:kibana][:bind_port].to_i
         bind_port_mariadb = node[:monasca][:mariadb][:bind_port].to_i
         bind_port_influxdb = node[:monasca][:influxdb][:bind_port].to_i
+        bind_port_influxdb_relay = node[:monasca][:influxdb][:influxdb_relay].to_i
       end
 
       @network_settings ||= {
@@ -101,32 +109,53 @@ module MonascaHelper
 
         api: {
           bind_port: bind_port_api,
-          ha_bind_host: node[:monasca][:api][:bind_host] == "*" ? "0.0.0.0" : @cluster_admin_ip,
+          ha_bind_host: node[:monasca][:api][:bind_host] == "*" ?
+            "0.0.0.0" :
+            @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:api][:bind_port].to_i
         },
 
         log_api: {
           bind_port: bind_port_log_api,
-          ha_bind_host: node[:monasca][:log_api][:bind_host] == "*" ? "0.0.0.0" : @cluster_admin_ip,
+          ha_bind_host: node[:monasca][:log_api][:bind_host] == "*" ?
+            "0.0.0.0" :
+            @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:log_api][:bind_port].to_i
         },
 
         kibana: {
           bind_port: bind_port_kibana,
-          ha_bind_host: node[:monasca][:kibana][:bind_host] == "*" ? "0.0.0.0" : @cluster_admin_ip,
+          ha_bind_host: node[:monasca][:kibana][:bind_host] == "*" ?
+            "0.0.0.0" :
+            @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:kibana][:bind_port].to_i
         },
 
         mariadb: {
           bind_port: bind_port_mariadb,
-          ha_bind_host: node[:monasca][:mariadb][:bind_host] == "*" ? "0.0.0.0" : @cluster_admin_ip,
+          ha_bind_host: node[:monasca][:mariadb][:bind_host] == "*" ?
+            "0.0.0.0" :
+            @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:mariadb][:bind_port].to_i
         },
 
         influxdb: {
           bind_port: bind_port_influxdb,
-          ha_bind_host: node[:monasca][:influxdb][:bind_host] == "*" ? "0.0.0.0" : @cluster_admin_ip,
+          ha_bind_host: node[:monasca][:influxdb][:bind_host] == "*" ?
+            "0.0.0.0" :
+            @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:influxdb][:bind_port].to_i
+        },
+
+        # FIXME: InfluxDB Relay should be "hidden" on the same port
+        # as InfluxDB, and all communication that go to /write API endpoint
+        # should be relayed to InfluxDB Relay
+        influxdb_relay: {
+          bind_port: bind_port_influxdb_relay,
+          ha_bind_host: node[:monasca][:influxdb_relay][:bind_host] == "*" ?
+            "0.0.0.0" :
+            @cluster_monitoring_ip,
+          ha_bind_port: node[:monasca][:influxdb_relay][:bind_port].to_i
         }
       }
     end

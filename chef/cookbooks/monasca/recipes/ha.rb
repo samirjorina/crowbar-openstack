@@ -69,4 +69,17 @@ haproxy_loadbalancer "influxdb" do
   action :nothing
 end.run_action(:create)
 
+# FIXME: InfluxDB Relay should be "hidden" on the same port
+# as InfluxDB, and all communication that go to /write API endpoint
+# should be relayed to InfluxDB Relay.
+# Need to use `frontend` and `backend` HAProxy configuration.
+haproxy_loadbalancer "influxdb-relay" do
+  address network_settings[:influxdb_relay][:ha_bind_host]
+  port network_settings[:influxdb_relay][:ha_bind_port]
+  servers CrowbarPacemakerHelper.haproxy_servers_for_service(
+    node, "monasca", "monasca-server", "influxdb_relay"
+  )
+  action :nothing
+end.run_action(:create)
+
 crowbar_pacemaker_sync_mark "sync-monasca_before_ha"

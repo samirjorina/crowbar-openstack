@@ -58,6 +58,10 @@
         "bind_host": "-",
         "bind_port": 8086
       },
+      "influxdb_relay": {
+        "bind_host": "-",
+        "bind_port": 9096
+      },
       "master": {
         "influxdb_mon_api_password": "",
         "influxdb_mon_persister_password": "",
