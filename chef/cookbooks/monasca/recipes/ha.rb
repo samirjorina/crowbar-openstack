@@ -28,7 +28,7 @@ haproxy_loadbalancer "monasca-api" do
   address network_settings[:api][:ha_bind_host]
   port network_settings[:api][:ha_bind_port]
   servers CrowbarPacemakerHelper.haproxy_servers_for_service(
-    node, "monasca", "monasca-server", "monasca_api"
+    node, "monasca", "monasca-server", "api"
   )
   action :nothing
 end.run_action(:create)
@@ -37,7 +37,7 @@ haproxy_loadbalancer "monasca-log-api" do
   address network_settings[:log_api][:ha_bind_host]
   port network_settings[:log_api][:ha_bind_port]
   servers CrowbarPacemakerHelper.haproxy_servers_for_service(
-    node, "monasca", "monasca-server", "monasca_log_api"
+    node, "monasca", "monasca-server", "log_api"
   )
   action :nothing
 end.run_action(:create)
