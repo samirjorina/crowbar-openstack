@@ -61,21 +61,40 @@ haproxy_loadbalancer "mariadb" do
 end.run_action(:create)
 
 haproxy_loadbalancer "influxdb" do
-  address network_settings[:influxdb][:ha_bind_host]
-  port network_settings[:influxdb][:ha_bind_port]
+  name "influxdb_cluster"
+  type "frontend"
+  address network_settings[:influxdb_cluster][:ha_bind_host]
+  port network_settings[:influxdb_cluster][:ha_bind_port]
+  mode "tcp"
+  # acl "write_path path_beg -i /write"
+  # use_backend "influxdb_relay_back if write_path"
+  # default_backend "influxdb_back"
+  servers CrowbarPacemakerHelper.haproxy_servers_for_service(
+    node, "monasca", "monasca-server", "influxdb_cluster"
+  )
+  action :nothing
+end.run_action(:create)
+
+haproxy_loadbalancer "influxdb-backend" do
+  name "influxdb_back"
+  type "backend"
+  balance "leastconn"
+  options [
+    "httpchk GET /ping"
+  ]
   servers CrowbarPacemakerHelper.haproxy_servers_for_service(
     node, "monasca", "monasca-server", "influxdb"
   )
   action :nothing
 end.run_action(:create)
 
-# FIXME: InfluxDB Relay should be "hidden" on the same port
-# as InfluxDB, and all communication that go to /write API endpoint
-# should be relayed to InfluxDB Relay.
-# Need to use `frontend` and `backend` HAProxy configuration.
-haproxy_loadbalancer "influxdb-relay" do
-  address network_settings[:influxdb_relay][:ha_bind_host]
-  port network_settings[:influxdb_relay][:ha_bind_port]
+haproxy_loadbalancer "influxdb-relay-backend" do
+  name "influxdb_relay_back"
+  type "backend"
+  balance "leastconn"
+  options [
+    "httpchk GET /ping"
+  ]
   servers CrowbarPacemakerHelper.haproxy_servers_for_service(
     node, "monasca", "monasca-server", "influxdb_relay"
   )

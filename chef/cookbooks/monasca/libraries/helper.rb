@@ -138,15 +138,18 @@ module MonascaHelper
           ha_bind_port: node[:monasca][:mariadb][:bind_port].to_i
         },
 
+        influxdb_cluster: {
+          bind_port: bind_port_influxdb,
+          ha_bind_host: is_public_influxdb ? "0.0.0.0" : @cluster_monitoring_ip,
+          ha_bind_port: node[:monasca][:influxdb][:bind_port].to_i
+        },
+
         influxdb: {
           bind_port: bind_port_influxdb,
           ha_bind_host: is_public_influxdb ? "0.0.0.0" : @cluster_monitoring_ip,
           ha_bind_port: node[:monasca][:influxdb][:bind_port].to_i
         },
 
-        # FIXME: InfluxDB Relay should be "hidden" on the same port
-        # as InfluxDB, and all communication that go to /write API endpoint
-        # should be relayed to InfluxDB Relay
         influxdb_relay: {
           bind_port: bind_port_influxdb_relay,
           ha_bind_host: is_public_influxdb_relay ? "0.0.0.0" : @cluster_monitoring_ip,
