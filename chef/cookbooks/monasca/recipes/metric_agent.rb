@@ -45,6 +45,7 @@ template monasca_reconfigure_file do
     agent_dimensions: agent_dimensions,
     install_plugins_only: false
   )
+  notifies :run, "execute[monasca-setup detect services]", :delayed
 end
 
 execute "monasca-setup detect services" do
@@ -54,6 +55,7 @@ execute "monasca-setup detect services" do
   only_if { File.exist?(monasca_reconfigure_file) }
   user agent_settings["user"]
   group agent_settings["group"]
+  action :nothing
 end
 
 service "monasca-agent" do
