@@ -69,8 +69,9 @@ haproxy_loadbalancer "influxdb" do
   # acl "write_path path_beg -i /write"
   # use_backend "influxdb_relay_back if write_path"
   # default_backend "influxdb_back"
+  # TODO: remove servers from frontend
   servers CrowbarPacemakerHelper.haproxy_servers_for_service(
-    node, "monasca", "monasca-server", "influxdb_cluster"
+    node, "monasca", "monasca-server", "influxdb"
   )
   action :nothing
 end.run_action(:create)
@@ -78,7 +79,10 @@ end.run_action(:create)
 haproxy_loadbalancer "influxdb-backend" do
   name "influxdb_back"
   type "backend"
-  balance "leastconn"
+  # TODO: remove address and port from backend
+  address network_settings[:influxdb][:ha_bind_host]
+  port network_settings[:influxdb][:ha_bind_port]
+  # balance "leastconn"
   options [
     "httpchk GET /ping"
   ]
@@ -91,7 +95,10 @@ end.run_action(:create)
 haproxy_loadbalancer "influxdb-relay-backend" do
   name "influxdb_relay_back"
   type "backend"
-  balance "leastconn"
+  # TODO: remove address and port from backend
+  address network_settings[:influxdb_relay][:ha_bind_host]
+  port network_settings[:influxdb_relay][:ha_bind_port]
+  # balance "leastconn"
   options [
     "httpchk GET /ping"
   ]
