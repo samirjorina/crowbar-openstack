@@ -47,6 +47,8 @@
               "required": true,
               "type": "map",
               "mapping": {
+                "file_path": { "type": "str", "required": true },
+                "multiline_pattern": { "type": "str", "required": false },
                 "keystone": {
                   "required": true,
                   "type": "map",

@@ -1,22 +1,17 @@
 input {
-  # TODO(trebskit) should initial list contain some files to be
-  # monitored ?
   file {
-    add_field => { "dimensions" => { "service" => "system" }}
-    path => "/var/log/messages"
-    tags => ["syslog"]
+    path => "<%= @log_agent_settings['file_path'] %>"
   }
 }
 
+<%- unless @log_agent_settings['multiline_pattern'].empty? then -%>
 filter {
-  if "syslog" in [tags] {
-    multiline {
-      negate => "true"
-      pattern => "^%{SYSLOGTIMESTAMP}"
-      what => "previous"
-    }
+  multiline {
+    pattern => "<%= @log_agent_settings['multiline_pattern'] %>"
+    what => "previous"
   }
 }
+<%- end -%>
 
 output {
   monasca_log_api {
