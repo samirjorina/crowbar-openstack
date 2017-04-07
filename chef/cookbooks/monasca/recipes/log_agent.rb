@@ -25,7 +25,6 @@ monasca_server = monasca_servers[0]
 monasca_log_api_url = MonascaHelper.log_api_public_url(monasca_server)
 
 log_agent_dimensions = {
-  service: "monitoring",
   hostname: node["hostname"]
 }
 
@@ -42,19 +41,21 @@ directory "/etc/monasca-log-agent/" do
   recursive true
 end
 
-template "/etc/monasca-log-agent/agent.conf" do
-  source "log-agent.conf.erb"
-  owner log_agent_settings["user"]
-  group log_agent_settings["group"]
-  mode 0o640
-  variables(
-    monasca_log_api_url: monasca_log_api_url,
-    log_agent_keystone: log_agent_keystone,
-    log_agent_settings: log_agent_settings,
-    log_agent_dimensions: log_agent_dimensions,
-    keystone_settings: keystone_settings
-  )
-  notifies :reload, "service[monasca-log-agent]"
+unless log_agent_settings['log_agent_config_manual'] do
+  template "/etc/monasca-log-agent/agent.conf" do
+    source "log-agent.conf.erb"
+    owner log_agent_settings["user"]
+    group log_agent_settings["group"]
+    mode 0o640
+    variables(
+      monasca_log_api_url: monasca_log_api_url,
+      log_agent_keystone: log_agent_keystone,
+      log_agent_settings: log_agent_settings,
+      log_agent_dimensions: log_agent_dimensions,
+      keystone_settings: keystone_settings
+    )
+    notifies :reload, "service[monasca-log-agent]"
+  end
 end
 
 service "monasca-log-agent" do

@@ -47,6 +47,7 @@
               "required": true,
               "type": "map",
               "mapping": {
+                "log_agent_config_manual": { "type": "bool", "required": true },
                 "file_path": { "type": "str", "required": true },
                 "multiline_pattern": { "type": "str", "required": false },
                 "keystone": {

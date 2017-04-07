@@ -27,6 +27,7 @@
         "amplifier": 0
       },
       "log_agent": {
+        "log_agent_config_manual": false,
         "file_path": "/var/log/**/*.log",
         "multiline_pattern": "^\s",
         "keystone": {
