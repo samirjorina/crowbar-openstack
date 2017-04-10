@@ -12,10 +12,9 @@ localhost                        ansible_connection=local
 keystone-node                    ansible_ssh_host=<%= @keystone_host %> ansible_ssh_user=<%= @ansible_ssh_user %>
 
 # Load balancer hosts
-# TODO
-#monasca-log-api-balancer-node    ansible_ssh_host= ansible_ssh_user=<%= @ansible_ssh_user %>
-#monasca-api-balancer-node        ansible_ssh_host= ansible_ssh_user=<%= @ansible_ssh_user %>
-#kibana-balancer-node             ansible_ssh_host= ansible_ssh_user=<%= @ansible_ssh_user %>
+monasca-log-api-balancer-node    ansible_ssh_host=<%= @monitoring_vip %> ansible_ssh_user=<%= @ansible_ssh_user %>
+monasca-api-balancer-node        ansible_ssh_host=<%= @monitoring_vip %> ansible_ssh_user=<%= @ansible_ssh_user %>
+kibana-balancer-node             ansible_ssh_host=<%= @monitoring_vip %> ansible_ssh_user=<%= @ansible_ssh_user %>
 
 # ElasticSearch nodes for cluster
 <% @monasca_hosts.each_with_index do |host, index| %>
@@ -78,8 +77,7 @@ keystone-node                    ansible_ssh_host=<%= @keystone_host %> ansible_
 <% end %>
 
 # Load balancer node
-# TODO
-#balancer-node                    ansible_ssh_host= ansible_ssh_user=<%= @ansible_ssh_user %>
+balancer-node                    ansible_ssh_host=<%= @monitoring_vip %> ansible_ssh_user=<%= @ansible_ssh_user %>
 
 #Storm Nimbus nodes
 <% @monasca_hosts.each_with_index do |host, index| %>
@@ -110,8 +108,7 @@ monasca-thresh-node              ansible_ssh_host=<%= @monasca_host %> ansible_s
 <% end %>
 
 # Keepalived nodes
-# TODO
-#keepalived-virtual-node ansible_ssh_host= ansible_ssh_user=<%= @ansible_ssh_user %>
+keepalived-virtual-node ansible_ssh_host=<%= @monitoring_vip %> ansible_ssh_user=<%= @ansible_ssh_user %>
 
 <% @monasca_hosts.each_with_index do |host, index| %>
 <%= "keepalived-node-#{index} ansible_ssh_host=#{host}" %> ansible_ssh_user=<%= @ansible_ssh_user %>

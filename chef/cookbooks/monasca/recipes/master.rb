@@ -35,6 +35,9 @@ hosts_template =
     "monasca-hosts-cluster.erb"
   end
 
+monasca_node = search(:node, "roles:monasca-server")[0]
+monitoring_vip = MonascaHelper.get_vip_for_monitoring_cluster(monasca_node)
+
 template "/opt/monasca-installer/monasca-hosts" do
   source hosts_template
   owner "root"
@@ -43,6 +46,7 @@ template "/opt/monasca-installer/monasca-hosts" do
   variables(
     monasca_host: monasca_hosts[0],
     monasca_hosts: monasca_hosts,
+    monitoring_vip: monitoring_vip,
     ansible_ssh_user: "root",
     keystone_host: keystone_settings["public_url_host"]
   )

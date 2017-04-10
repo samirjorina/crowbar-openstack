@@ -76,16 +76,18 @@ module MonascaHelper
       ).address
     end
 
-    def network_settings(node)
-      @ip ||= Chef::Recipe::Barclamp::Inventory.get_network_by_type(
+    def get_vip_for_monitoring_cluster(node)
+      CrowbarPacemakerHelper.cluster_vip(
         node, "monitoring"
-      ).address
+      )
+    end
+
+    def network_settings(node)
+      @ip ||= get_host_for_monitoring_url(node)
       @cluster_monitoring_ip ||= nil
 
       if node[:monasca][:ha][:enabled] && !@cluster_monitoring_ip
-        @cluster_monitoring_ip = CrowbarPacemakerHelper.cluster_vip(
-          node, "monitoring"
-        )
+        @cluster_monitoring_ip = get_vip_for_monitoring_cluster(node)
       end
 
       if node[:monasca][:ha][:enabled]
