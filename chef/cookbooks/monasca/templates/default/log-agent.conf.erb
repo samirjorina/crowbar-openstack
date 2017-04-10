@@ -1,17 +1,12 @@
 input {
-  file {
-    path => "<%= @log_agent_settings['file_path'] %>"
-  }
+<% @log_files.each_pair do |path, service| %>
+  <%= "file {
+    add_field => { \"dimensions\" => { \"service\" => \"#{service}\" }}
+    path => \"#{path}\"
+  }"
+ %>
+<% end %>
 }
-
-<%- unless @log_agent_settings['multiline_pattern'].empty? then -%>
-filter {
-  multiline {
-    pattern => "<%= @log_agent_settings['multiline_pattern'] %>"
-    what => "previous"
-  }
-}
-<%- end -%>
 
 output {
   monasca_log_api {

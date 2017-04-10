@@ -20,10 +20,3 @@
       = integer_field %w(metric_agent max_measurement_buffer_size)
       = integer_field %w(metric_agent backlog_send_rate)
       = integer_field %w(metric_agent amplifier)
-
-    %fieldset
-      %legend
-        = t(".log_agent_header")
-
-      = string_field %w(log_agent file_path)
-      = string_field %w(log_agent multiline_pattern)

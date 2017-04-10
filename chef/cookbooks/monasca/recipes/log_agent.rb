@@ -41,21 +41,33 @@ directory "/etc/monasca-log-agent/" do
   recursive true
 end
 
-unless log_agent_settings['log_agent_config_manual'] do
-  template "/etc/monasca-log-agent/agent.conf" do
-    source "log-agent.conf.erb"
-    owner log_agent_settings["user"]
-    group log_agent_settings["group"]
-    mode 0o640
-    variables(
-      monasca_log_api_url: monasca_log_api_url,
-      log_agent_keystone: log_agent_keystone,
-      log_agent_settings: log_agent_settings,
-      log_agent_dimensions: log_agent_dimensions,
-      keystone_settings: keystone_settings
-    )
-    notifies :reload, "service[monasca-log-agent]"
+log_files = {
+  '/var/log/messages' => 'system',
+  '/var/log/zypper.log' => 'system'
+}
+
+ruby_block "find log files" do
+  block do
+    log_dirs = Dir.entries("/var/log")
+      .select {|e| File.directory?("/var/log/#{e}") and !(e =="." || e == "..") }
+    log_dirs.each { |d| log_files["/var/log/#{d}/**/*.log"] = d.downcase }
   end
+end
+
+template "/etc/monasca-log-agent/agent.conf" do
+  source "log-agent.conf.erb"
+  owner log_agent_settings["user"]
+  group log_agent_settings["group"]
+  mode 0o640
+  variables(
+    monasca_log_api_url: monasca_log_api_url,
+    log_agent_keystone: log_agent_keystone,
+    log_agent_settings: log_agent_settings,
+    log_agent_dimensions: log_agent_dimensions,
+    keystone_settings: keystone_settings,
+    log_files: log_files
+  )
+  notifies :reload, "service[monasca-log-agent]"
 end
 
 service "monasca-log-agent" do
