@@ -5,10 +5,10 @@
     "monasca": {
       "metric_agent": {
         "keystone": {
-          "service_user": "cmm-agent",
+          "service_user": "monasca-agent",
           "service_password": "",
-          "service_tenant": "cmm",
-          "service_role": "cmm-agent"
+          "service_tenant": "monasca",
+          "service_role": "monasca-agent"
         },
         "insecure": true,
         "system_only": false,
@@ -28,10 +28,10 @@
       },
       "log_agent": {
         "keystone": {
-          "service_user": "cmm-log-agent",
+          "service_user": "monasca-log-agent",
           "service_password": "",
-          "service_tenant": "cmm",
-          "service_role": "cmm-agent"
+          "service_tenant": "monasca",
+          "service_role": "monasca-agent"
         }
       },
       "api": {
@@ -52,8 +52,8 @@
         "database_monapi_password": "",
         "database_thresh_password": "",
         "database_logapi_password": "",
-        "keystone_cmm_operator_user_password": "",
-        "keystone_cmm_agent_password": "",
+        "keystone_monasca_operator_password": "",
+        "keystone_monasca_agent_password": "",
         "keystone_admin_agent_password": "",
         "database_grafana_password": ""
       },
@@ -69,8 +69,8 @@
       "keystone_instance": "none",
       "service_password": "none",
       "service_user": "monasca",
-      "service_tenant": "cmm",
-      "service_roles": ["cmm-agent"]
+      "service_tenant": "monasca",
+      "service_roles": ["monasca-agent"]
     }
   },
   "deployment": {

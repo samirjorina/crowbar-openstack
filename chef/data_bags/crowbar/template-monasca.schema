@@ -88,8 +88,8 @@
                 "database_monapi_password": { "required": true, "type": "str" },
                 "database_thresh_password": { "required": true, "type": "str" },
                 "database_logapi_password": { "required": true, "type": "str" },
-                "keystone_cmm_operator_user_password": { "required": true, "type": "str" },
-                "keystone_cmm_agent_password": { "required": true, "type": "str" },
+                "keystone_monasca_operator_password": { "required": true, "type": "str" },
+                "keystone_monasca_agent_password": { "required": true, "type": "str" },
                 "keystone_admin_agent_password": { "required": true, "type": "str" },
                 "database_grafana_password": { "required": true, "type": "str" }
               }
