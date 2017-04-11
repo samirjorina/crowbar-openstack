@@ -1,5 +1,5 @@
-#
 # Copyright 2017 Fujitsu LIMITED
+#
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,8 @@ hosts_template =
   end
 
 monasca_node = search(:node, "roles:monasca-server")[0]
-monitoring_vip = MonascaHelper.get_vip_for_monitoring_cluster(monasca_node)
+public_vip = MonascaHelper.get_vip_for_public_cluster(monasca_node)
+admin_vip = MonascaHelper.get_vip_for_admin_cluster(monasca_node)
 
 template "/opt/monasca-installer/monasca-hosts" do
   source hosts_template
@@ -46,7 +47,8 @@ template "/opt/monasca-installer/monasca-hosts" do
   variables(
     monasca_host: monasca_hosts[0],
     monasca_hosts: monasca_hosts,
-    monitoring_vip: monitoring_vip,
+    public_vip: public_vip,
+    admin_vip: admin_vip,
     ansible_ssh_user: "root",
     keystone_host: keystone_settings["public_url_host"]
   )

@@ -76,9 +76,15 @@ module MonascaHelper
       ).address
     end
 
-    def get_vip_for_monitoring_cluster(node)
+    def get_vip_for_public_cluster(node)
       CrowbarPacemakerHelper.cluster_vip(
-        node, "monitoring"
+        node, "public"
+      )
+    end
+
+    def get_vip_for_admin_cluster(node)
+      CrowbarPacemakerHelper.cluster_vip(
+        node, "admin"
       )
     end
 
@@ -87,7 +93,7 @@ module MonascaHelper
       @cluster_monitoring_ip ||= nil
 
       if node[:monasca][:ha][:enabled] && !@cluster_monitoring_ip
-        @cluster_monitoring_ip = get_vip_for_monitoring_cluster(node)
+        @cluster_monitoring_ip = get_vip_for_admin_cluster(node)
       end
 
       if node[:monasca][:ha][:enabled]
