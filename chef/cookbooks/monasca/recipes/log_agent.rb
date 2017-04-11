@@ -42,14 +42,15 @@ directory "/etc/monasca-log-agent/" do
 end
 
 log_files = {
-  '/var/log/messages' => 'system',
-  '/var/log/zypper.log' => 'system'
+  "/var/log/messages" => "system",
+  "/var/log/zypper.log" => "system"
 }
 
 ruby_block "find log files" do
   block do
-    log_dirs = Dir.entries("/var/log")
-      .select {|e| File.directory?("/var/log/#{e}") and !(e =="." || e == "..") }
+    log_dirs = 
+      Dir.entries("/var/log")
+         .select { |e| File.directory?("/var/log/#{e}") && !(e == "." || e == "..") }
     log_dirs.each { |d| log_files["/var/log/#{d}/**/*.log"] = d.downcase }
   end
 end
