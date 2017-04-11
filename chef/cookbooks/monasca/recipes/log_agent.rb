@@ -19,8 +19,11 @@ log_agent_settings = node[:monasca][:log_agent]
 log_agent_keystone = log_agent_settings[:keystone]
 keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
 
-monasca_servers = search(:node, "roles:monasca-server")
-monasca_server = monasca_servers[0]
+monasca_server = node_search_with_cache("roles:monasca-server").first
+if monasca_server.nil?
+  Chef::Log.warn("No monasca-server found.")
+  return
+end
 
 monasca_log_api_url = MonascaHelper.log_api_public_url(monasca_server)
 
