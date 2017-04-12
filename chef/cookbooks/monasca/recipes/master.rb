@@ -55,13 +55,19 @@ template "/opt/monasca-installer/monasca-hosts" do
   notifies :run, "execute[run ansible]", :delayed
 end
 
+network_settings = MonascaHelper.network_settings(node)
+
 template "/opt/monasca-installer/group_vars/all_group" do
   source "all_group.erb"
   owner "root"
   group "root"
   mode "0644"
   variables(
-    keystone_settings: keystone_settings
+    keystone_settings: keystone_settings,
+    monasca_api_client_port: network_settings[:api][:bind_port],
+    monasca_log_api_port: network_settings[:log_api][:bind_port],
+    kibana_port: network_settings[:kibana][:bind_port],
+    mysql_port: network_settings[:mariadb][:bind_port],
   )
   notifies :run, "execute[run ansible]", :delayed
 end

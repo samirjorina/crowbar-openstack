@@ -3,19 +3,19 @@
 # file: group_vars/all_group
 
 # ports
-monasca_api_client_port: 8070
+monasca_api_client_port: <%= @monasca_api_client_port %>
 monasca_api_admin_port: 8081
 persister_app_connector_port: 8190
 persister_admin_connector_port: 8191
-monasca_log_api_port: 5607
+log_api_port: <%= @monasca_log_api_port %>
 keystone_port: 5000
 keystone_user_port: 35357
-kibana_port: 5601
+kibana_port: <%= @kibana_port %>
 elasticsearch_port: 9200
 kafka_port: 9092
 zookeeper_port: 2181
 memcached_port: 11211
-mysql_port: 3306
+mysql_port: <%= @mysql_port %>
 
 # hosts
 monasca_api_ip: "{% if groups['monasca_api_group']|length > 1 %}
@@ -24,7 +24,7 @@ monasca_api_ip: "{% if groups['monasca_api_group']|length > 1 %}
                     {{ hostvars['monasca-api-node']['ansible_ssh_host'] }}
                  {% endif %}
                 "
-monasca_log_api_ip: "{% if groups['monasca_log_api_group']|length > 1 %}
+log_api_ip: "{% if groups['monasca_log_api_group']|length > 1 %}
                         {{ hostvars['monasca-log-api-balancer-node']['ansible_ssh_host'] }}
                      {% else %}
                         {{ hostvars['monasca-log-api-node']['ansible_ssh_host'] }}
@@ -49,7 +49,7 @@ keystone_url: "<%= @keystone_settings['public_auth_url'] %>"
 
 # URL service definition
 monasca_api_url: "http://{{ monasca_api_ip|trim|safe }}:{{ monasca_api_client_port|int }}/v2.0"
-monasca_log_api_url: "http://{{ monasca_log_api_ip|trim|safe }}:{{ monasca_log_api_port|int }}/v3.0"
+monasca_log_api_url: "http://{{ log_api_ip|trim|safe }}:{{ log_api_port|int }}/v3.0"
 kibana_url: "http://{{ kibana_ip|trim|safe }}:{{ kibana_port }}"
 
 # Monasca Api CLI - Credentials
@@ -86,7 +86,7 @@ ansible_version_min:
 ansible_version_max:
   ver: "2.2.1.0"
   constraint: "<="
-pip_version_min: 7.0.3
+pip_version_min: 8.1.1
 
 # pip configuration
 pip_base_dir: "/root/.pip"
