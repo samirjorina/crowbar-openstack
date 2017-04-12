@@ -1,21 +1,11 @@
 input {
-  # TODO(trebskit) should initial list contain some files to be
-  # monitored ?
-  file {
-    add_field => { "dimensions" => { "service" => "system" }}
-    path => "/var/log/messages"
-    tags => ["syslog"]
-  }
-}
-
-filter {
-  if "syslog" in [tags] {
-    multiline {
-      negate => "true"
-      pattern => "^%{SYSLOGTIMESTAMP}"
-      what => "previous"
-    }
-  }
+<% @log_files.each_pair do |path, service| %>
+  <%= "file {
+    add_field => { \"dimensions\" => { \"service\" => \"#{service}\" }}
+    path => \"#{path}\"
+  }"
+ %>
+<% end %>
 }
 
 output {

@@ -28,7 +28,6 @@ end
 monasca_log_api_url = MonascaHelper.log_api_public_url(monasca_server)
 
 log_agent_dimensions = {
-  service: "monitoring",
   hostname: node["hostname"]
 }
 
@@ -45,6 +44,20 @@ directory "/etc/monasca-log-agent/" do
   recursive true
 end
 
+log_files = {
+  "/var/log/messages" => "system",
+  "/var/log/zypper.log" => "system"
+}
+
+ruby_block "find log files" do
+  block do
+    log_dirs =
+      Dir.entries("/var/log")
+         .select { |e| File.directory?("/var/log/#{e}") && !(e == "." || e == "..") }
+    log_dirs.each { |d| log_files["/var/log/#{d}/**/*.log"] = d.downcase }
+  end
+end
+
 template "/etc/monasca-log-agent/agent.conf" do
   source "log-agent.conf.erb"
   owner log_agent_settings["user"]
@@ -55,7 +68,8 @@ template "/etc/monasca-log-agent/agent.conf" do
     log_agent_keystone: log_agent_keystone,
     log_agent_settings: log_agent_settings,
     log_agent_dimensions: log_agent_dimensions,
-    keystone_settings: keystone_settings
+    keystone_settings: keystone_settings,
+    log_files: log_files
   )
   notifies :reload, "service[monasca-log-agent]"
 end
