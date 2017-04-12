@@ -49,6 +49,6 @@ default[:monasca][:metric_agent][:agent_service_name] = "openstack-monasca-agent
 
 # log-agent default service settings
 default[:monasca][:log_agent][:service_name] = monasca_log_agent_service_name
-default[:monasca][:log_agent][:user] = "monasca-log-agent"
-default[:monasca][:log_agent][:group] = "logstash"
+default[:monasca][:log_agent][:user] = "root"
+default[:monasca][:log_agent][:group] = "root"
 default[:monasca][:log_agent][:debug] = monasca_debug
