@@ -77,7 +77,7 @@ end
 service "monasca-log-agent" do
   service_name log_agent_settings[:service_name]
   supports status: true, restart: true, start: true, stop: true
-  action [:disable, :stop]
+  action [:enable, :start]
   ignore_failure true
 end
 
