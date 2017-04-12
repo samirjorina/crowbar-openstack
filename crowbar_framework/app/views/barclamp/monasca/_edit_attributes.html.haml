@@ -20,3 +20,14 @@
       = integer_field %w(metric_agent max_measurement_buffer_size)
       = integer_field %w(metric_agent backlog_send_rate)
       = integer_field %w(metric_agent amplifier)
+
+    %fieldset
+      %legend
+        = t(".master_notification_header")
+
+      = boolean_field %w(master notification_enable_email)
+      = string_field %w(master smtp_host)
+      = integer_field %w(master smtp_port)
+      = string_field %w(master smtp_user)
+      = string_field %w(master smtp_password)
+      = string_field %w(master smtp_from_address)

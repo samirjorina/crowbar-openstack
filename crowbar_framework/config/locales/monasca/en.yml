@@ -43,6 +43,14 @@ en:
           max_measurement_buffer_size: 'Maximum number of measurements to buffer when unable to communicate with the monasca-api (-1 means no limit, max_measurement_buffer_size)'
           backlog_send_rate: 'Maximum number of messages to send at one time when communication with the monasca-api is restored (backlog_send_rate)'
           amplifier: 'Publish extra metrics to the API by adding this number of "amplifier" dimensions. For load testing purposes only; set to 0 for production use (amplifier)'
+        master_notification_header: 'Notification configuration'
+        master:
+          notification_enable_email: 'Enable email notification'
+          smtp_host: 'SMTP host'
+          smtp_port: 'SMTP port'
+          smtp_user: 'SMTP user'
+          smtp_password: 'SMTP password'
+          smtp_from_address: 'SMTP sender (FROM) address'
         db_header: 'Database settings'
         db:
           database: 'Database'
