@@ -102,17 +102,8 @@ monasca-thresh-node              ansible_ssh_host=<%= @monasca_host %> ansible_s
 <%= "influxdb-node-#{index} ansible_ssh_host=#{host}" %> ansible_ssh_user=<%= @ansible_ssh_user %>
 <% end %>
 
-# HAProxy nodes
-<% @monasca_hosts.each_with_index do |host, index| %>
-<%= "haproxy-node-#{index} ansible_ssh_host=#{host}" %> ansible_ssh_user=<%= @ansible_ssh_user %>
-<% end %>
-
 # Keepalived nodes
 keepalived-virtual-node ansible_ssh_host=<%= @admin_vip %> ansible_ssh_user=<%= @ansible_ssh_user %>
-
-<% @monasca_hosts.each_with_index do |host, index| %>
-<%= "keepalived-node-#{index} ansible_ssh_host=#{host}" %> ansible_ssh_user=<%= @ansible_ssh_user %>
-<% end %>
 
 # Elasticsearch Curator
 <% @monasca_hosts.each_with_index do |host, index| %>
@@ -218,14 +209,8 @@ influxdb-node-<%= index + 1 %> influxdb_master_node_name=influxdb-node-0
 <% end %>
 
 [haproxy_group]
-<% @monasca_hosts.length.times do |index| %>
-<%= "haproxy-node-#{index}" %>
-<% end %>
 
 [keepalived_group]
-<% @monasca_hosts.length.times do |index| %>
-<%= "keepalived-node-#{index}" %>
-<% end %>
 
 [elasticsearch_curator_group]
 <% @monasca_hosts.length.times do |index| %>
