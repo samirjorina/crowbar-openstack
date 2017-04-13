@@ -21,7 +21,7 @@ register_auth_hash = {
   tenant: keystone_settings["admin_tenant"]
 }
 
-keystone_register "monasca api wakeup keystone" do
+keystone_register "monasca server wakeup keystone" do
   protocol keystone_settings["protocol"]
   insecure keystone_settings["insecure"]
   host keystone_settings["internal_url_host"]
@@ -30,7 +30,7 @@ keystone_register "monasca api wakeup keystone" do
   action :wakeup
 end
 
-keystone_register "register monasca api user" do
+keystone_register "register monasca operator user" do
   protocol keystone_settings["protocol"]
   insecure keystone_settings["insecure"]
   host keystone_settings["internal_url_host"]
@@ -42,7 +42,7 @@ keystone_register "register monasca api user" do
   action :add_user
 end
 
-keystone_register "give monasca api user access" do
+keystone_register "give monasca operator admin role" do
   protocol keystone_settings["protocol"]
   insecure keystone_settings["insecure"]
   host keystone_settings["internal_url_host"]
@@ -54,7 +54,20 @@ keystone_register "give monasca api user access" do
   action :add_access
 end
 
-keystone_register "register monasca api service" do
+keystone_register "give monasca operator monasca-user role" do
+  protocol keystone_settings["protocol"]
+  insecure keystone_settings["insecure"]
+  host keystone_settings["internal_url_host"]
+  port keystone_settings["admin_port"]
+  auth register_auth_hash
+  user_name keystone_settings["service_user"]
+  tenant_name keystone_settings["service_tenant"]
+  # TODO: this should not be hard-coded
+  role_name "monasca-user"
+  action :add_access
+end
+
+keystone_register "register monasca service" do
   protocol keystone_settings["protocol"]
   insecure keystone_settings["insecure"]
   host keystone_settings["internal_url_host"]

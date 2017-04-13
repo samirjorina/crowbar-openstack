@@ -32,7 +32,7 @@
       },
       "log_agent": {
         "keystone": {
-          "service_user": "monasca-log-agent",
+          "service_user": "monasca-agent",
           "service_password": "",
           "service_tenant": "monasca",
           "service_role": "monasca-agent"
@@ -74,9 +74,9 @@
       "database_instance": "none",
       "keystone_instance": "none",
       "service_password": "none",
-      "service_user": "monasca",
+      "service_user": "monasca-operator",
       "service_tenant": "monasca",
-      "service_roles": ["monasca-agent"]
+      "service_roles": ["monasca-agent", "monasca-user"]
     }
   },
   "deployment": {
