@@ -108,6 +108,8 @@ ansible_vars = {
   log_api_bind_host: pub_net_ip,
   influxdb_bind_address: monasca_net_ip,
   influxdb_host: monasca_net_ip,
+  influxdb_client_port: network_settings[:influxdb][:bind_port],
+  influxdb_relay_http_port: network_settings[:influxdb_relay][:bind_port],
   monasca_api_bind_host: pub_net_ip,
   elasticsearch_host: monasca_net_ip,
   nimbus_host: monasca_net_ip,
