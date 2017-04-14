@@ -74,7 +74,7 @@
       "database_instance": "none",
       "keystone_instance": "none",
       "service_password": "none",
-      "service_user": "monasca-operator",
+      "service_user": "monasca",
       "service_tenant": "monasca",
       "service_roles": ["monasca-agent", "monasca-user"]
     }
