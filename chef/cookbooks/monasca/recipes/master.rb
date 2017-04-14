@@ -102,27 +102,28 @@ ansible_vars = {
   keystone_admin_password: keystone_settings["admin_password"],
   database_grafana_password: node[:monasca][:master][:database_grafana_password],
 
+  # Stick to the same order like in monasca.yml
   memcached_listen_ip: monasca_net_ip,
+  memcached_nodes: ["#{monasca_net_ip}:11211"],
+  zookeeper_hosts: monasca_net_ip,
   kafka_host: monasca_net_ip,
+  kafka_hosts: "#{monasca_net_ip}:9092",
+  elasticsearch_host: monasca_net_ip,
+  elasticsearch_hosts: monasca_net_ip,
+  elasticsearch_nodes: "[#{monasca_net_ip}]",
   kibana_host: pub_net_ip,
   log_api_bind_host: pub_net_ip,
+  monasca_log_api_url: "http://#{pub_net_ip}:#{node[:monasca][:log_api][:bind_port]}/v2.0",
+  nimbus_host: monasca_net_ip,
+  database_host: monasca_net_ip,
+  mariadb_bind_address: monasca_net_ip,
   influxdb_bind_address: monasca_net_ip,
   influxdb_host: monasca_net_ip,
+  influxdb_url: "http://#{monasca_net_ip}:#{network_settings[:influxdb][:bind_port]}",
   influxdb_client_port: network_settings[:influxdb][:bind_port],
   influxdb_relay_http_port: network_settings[:influxdb_relay][:bind_port],
   monasca_api_bind_host: pub_net_ip,
-  elasticsearch_host: monasca_net_ip,
-  nimbus_host: monasca_net_ip,
-  zookeeper_hosts: monasca_net_ip,
-  kafka_hosts: "#{monasca_net_ip}:9092",
-  mariadb_bind_address: monasca_net_ip,
-  database_host: monasca_net_ip,
-  monasca_api_url: "http://#{pub_net_ip}:8070/v2.0",
-  monasca_log_api_url: "http://#{pub_net_ip}:5607/v2.0",
-  memcached_nodes: ["#{monasca_net_ip}:11211"],
-  influxdb_url: "http://#{monasca_net_ip}:8086",
-  elasticsearch_nodes: "[#{monasca_net_ip}]",
-  elasticsearch_hosts: monasca_net_ip
+  monasca_api_url: "http://#{pub_net_ip}:#{node[:monasca][:api][:bind_port]}/v2.0"
 }.to_json
 
 execute "run ansible" do
