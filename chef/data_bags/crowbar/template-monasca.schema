@@ -97,7 +97,7 @@
                 "smtp_port": { "required": true, "type": "int" },
                 "smtp_user": { "required": true, "type": "str" },
                 "smtp_password": { "required": true, "type": "str" },
-                "smtp_from_address": { "required": true, "type": "str" },
+                "smtp_from_address": { "required": true, "type": "str" }
               }
             },
             "db": {
