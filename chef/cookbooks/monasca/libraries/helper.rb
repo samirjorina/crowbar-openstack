@@ -76,15 +76,22 @@ module MonascaHelper
       ).address
     end
 
+    def get_vip_for_admin_cluster(node)
+      CrowbarPacemakerHelper.cluster_vip(
+        node, "admin"
+      )
+    end
+
     def get_vip_for_public_cluster(node)
       CrowbarPacemakerHelper.cluster_vip(
         node, "public"
       )
     end
 
-    def get_vip_for_admin_cluster(node)
+    # TODO: needs https://github.com/crowbar/crowbar-ha/pull/195
+    def get_vip_for_monitoring_cluster(node)
       CrowbarPacemakerHelper.cluster_vip(
-        node, "admin"
+        node, "monitoring"
       )
     end
 
