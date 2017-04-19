@@ -49,6 +49,9 @@ en:
           smtp_user: 'SMTP user'
           smtp_password: 'SMTP password'
           smtp_from_address: 'SMTP sender (FROM) address'
+        operator_user_header: 'Users config'
+        operator_user:
+          password: 'Password for the monasca-operator user'
         db_header: 'Database settings'
         db:
           database: 'Database'

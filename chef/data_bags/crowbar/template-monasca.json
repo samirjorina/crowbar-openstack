@@ -3,6 +3,18 @@
   "description": "Logging and Monitoring Service for OpenStack",
   "attributes": {
     "monasca" : {
+      "agent_user": {
+        "name": "monasca-agent",
+        "password": "",
+        "roles": ["monasca-agent"],
+        "tenant": "monasca"
+      },
+      "operator_user": {
+        "name": "monasca-operator",
+        "password": "",
+        "roles": ["admin", "monasca-user"],
+        "tenant": "monasca"
+      },
       "metric_agent" : {
         "password": "",
         "user_domain_id": "",
@@ -22,21 +34,7 @@
         "num_collector_threads": 1,
         "pool_full_max_retries": 5,
         "plugin_collect_time_warn": 6,
-        "log_level": "INFO",
-        "keystone": {
-          "service_user": "monasca-metrics-agent",
-          "service_password": "",
-          "service_tenant": "monasca",
-          "service_role": "monasca-agent"
-        }
-      },
-      "log_agent": {
-        "keystone": {
-          "service_user": "monasca-agent",
-          "service_password": "",
-          "service_tenant": "monasca",
-          "service_role": "monasca-agent"
-        }
+        "log_level": "INFO"
       },
       "api" : {
         "bind_host" : "*",
@@ -74,9 +72,7 @@
       "database_instance": "none",
       "keystone_instance": "none",
       "service_password": "none",
-      "service_user": "monasca",
-      "service_tenant": "monasca",
-      "service_roles": ["monasca-agent", "monasca-user"]
+      "service_user": "monasca"
     }
   },
   "deployment": {

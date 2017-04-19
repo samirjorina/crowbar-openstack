@@ -30,7 +30,7 @@ keystone_register "monasca server wakeup keystone" do
   action :wakeup
 end
 
-keystone_register "register monasca operator user" do
+keystone_register "register monasca service user" do
   protocol keystone_settings["protocol"]
   insecure keystone_settings["insecure"]
   host keystone_settings["internal_url_host"]
@@ -42,7 +42,7 @@ keystone_register "register monasca operator user" do
   action :add_user
 end
 
-keystone_register "give monasca operator admin role" do
+keystone_register "give monasca service user access" do
   protocol keystone_settings["protocol"]
   insecure keystone_settings["insecure"]
   host keystone_settings["internal_url_host"]
@@ -51,19 +51,6 @@ keystone_register "give monasca operator admin role" do
   user_name keystone_settings["service_user"]
   tenant_name keystone_settings["service_tenant"]
   role_name "admin"
-  action :add_access
-end
-
-keystone_register "give monasca operator monasca-user role" do
-  protocol keystone_settings["protocol"]
-  insecure keystone_settings["insecure"]
-  host keystone_settings["internal_url_host"]
-  port keystone_settings["admin_port"]
-  auth register_auth_hash
-  user_name keystone_settings["service_user"]
-  tenant_name keystone_settings["service_tenant"]
-  # TODO: this should not be hard-coded
-  role_name "monasca-user"
   action :add_access
 end
 
@@ -93,80 +80,52 @@ keystone_register "register monasca api endpoint" do
   action :add_endpoint_template
 end
 
-monasca_project = node[:monasca][:service_tenant]
-monasca_roles = node[:monasca][:service_roles]
+users = [node[:monasca][:operator_user], node[:monasca][:agent_user]]
 
-keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
-
-register_auth_hash = {
-  user: keystone_settings["admin_user"],
-  password: keystone_settings["admin_password"],
-  tenant: keystone_settings["admin_tenant"]
-}
-
-keystone_register "monasca:common wakeup keystone" do
-  protocol keystone_settings["protocol"]
-  insecure keystone_settings["insecure"]
-  host keystone_settings["internal_url_host"]
-  port keystone_settings["admin_port"]
-  auth register_auth_hash
-  action :wakeup
-end
-
-keystone_register "monasca:common create tenant #{monasca_project} for monasca" do
-  protocol keystone_settings["protocol"]
-  insecure keystone_settings["insecure"]
-  host keystone_settings["internal_url_host"]
-  port keystone_settings["admin_port"]
-  auth register_auth_hash
-  tenant_name monasca_project
-  action :add_tenant
-end
-
-monasca_roles.each do |role|
-  keystone_register "monasca:common register #{role} role in #{monasca_project} tenant" do
+users.each do |u|
+  keystone_register "create tenant" do
     protocol keystone_settings["protocol"]
     insecure keystone_settings["insecure"]
     host keystone_settings["internal_url_host"]
     port keystone_settings["admin_port"]
     auth register_auth_hash
-    role_name role
-    action :add_role
+    tenant_name u["tenant"]
+    action :add_tenant
   end
-end
 
-agents_settings = []
+  keystone_register "register user" do
+    protocol keystone_settings["protocol"]
+    insecure keystone_settings["insecure"]
+    host keystone_settings["internal_url_host"]
+    port keystone_settings["admin_port"]
+    auth register_auth_hash
+    user_name u["name"]
+    user_password u["password"]
+    tenant_name u["tenant"]
+    action :add_user
+  end
 
-agents_settings.push(node[:monasca][:metric_agent][:keystone])
-la_keystone = node[:monasca][:log_agent][:keystone]
-agents_settings.push(la_keystone)
-
-unless agents_settings.empty?
-  agents_settings.each do |as|
-
-    keystone_register "monasca:common #{as["service_user"]} in #{as["service_tenant"]} project" do
+  u["roles"].each do |role|
+    keystone_register "register #{role} role" do
       protocol keystone_settings["protocol"]
       insecure keystone_settings["insecure"]
       host keystone_settings["internal_url_host"]
       port keystone_settings["admin_port"]
       auth register_auth_hash
-      user_name as["service_user"]
-      user_password as["service_password"]
-      tenant_name as["service_tenant"]
-      action :add_user
+      role_name role
+      action :add_role
     end
 
-    keystone_register "monasca:common #{as["service_user"]} assign role #{as["service_role"]}" do
+    keystone_register "assign #{role}" do
       protocol keystone_settings["protocol"]
       insecure keystone_settings["insecure"]
       host keystone_settings["internal_url_host"]
       port keystone_settings["admin_port"]
       auth register_auth_hash
-      user_name as["service_user"]
-      tenant_name as["service_tenant"]
-      role_name as["service_role"]
+      user_name u["name"]
+      tenant_name u["tenant"]
+      role_name role
       action :add_access
     end
-
   end
 end

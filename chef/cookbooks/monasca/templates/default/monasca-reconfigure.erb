@@ -1,9 +1,9 @@
 #!/bin/sh
 
 '/usr/bin/monasca-setup' \
-    -u '<%= @agent_keystone["service_user"] %>' \
-    -p '<%= @agent_keystone["service_password"] %>' \
-    --project_name '<%= @agent_keystone["service_tenant"] %>' \
+    -u '<%= @agent_user["name"] %>' \
+    -p '<%= @agent_user["password"] %>' \
+    --project_name '<%= @agent_user["tenant"] %>' \
     <% if defined?(@service) -%> --service '<%= @service %>' <% end -%> \
     --keystone_url '<%= @keystone_settings["admin_auth_url"] %>/v3' \
     --monasca_url '<%= @monasca_api_url %>' \

@@ -16,7 +16,7 @@
 package "openstack-monasca-log-agent"
 
 log_agent_settings = node[:monasca][:log_agent]
-log_agent_keystone = log_agent_settings[:keystone]
+agent_user = node[:agent_user]
 keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
 
 monasca_server = node_search_with_cache("roles:monasca-server").first
@@ -50,7 +50,8 @@ template "/etc/monasca-log-agent/agent.conf" do
   group "root"
   mode 0o640
   variables(
-    log_agent_keystone: log_agent_keystone,
+    monasca_log_api_url: monasca_log_api_url,
+    agent_user: agent_user,
     log_agent_settings: log_agent_settings,
     log_agent_dimensions: log_agent_dimensions,
     keystone_settings: keystone_settings,

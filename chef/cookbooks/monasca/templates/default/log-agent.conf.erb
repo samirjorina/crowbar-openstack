@@ -12,9 +12,9 @@ output {
   monasca_log_api {
     ### keystone based settings
     keystone_api_url => "<%= @keystone_settings['admin_auth_url'] %>/v3"
-    project_name => "<%= @log_agent_keystone['service_tenant'] %>"
-    username => "<%= @log_agent_keystone['service_user'] %>"
-    password => "<%= @log_agent_keystone['service_password'] %>"
+    project_name => "<%= @agent_user['tenant'] %>"
+    username => "<%= @agent_user['name'] %>"
+    password => "<%= @agent_user['password'] %>"
     user_domain_name => "<%= @keystone_settings['admin_domain'] %>"
     project_domain_name => "<%= @keystone_settings['admin_domain'] %>"
     ### monasca specific settings

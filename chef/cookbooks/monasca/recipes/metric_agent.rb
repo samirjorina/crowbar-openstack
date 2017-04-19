@@ -17,7 +17,7 @@
 package "openstack-monasca-agent"
 
 agent_settings = node[:monasca][:metric_agent]
-agent_keystone = agent_settings[:keystone]
+agent_user = node[:monasca][:agent_user]
 
 keystone_settings = KeystoneHelper.keystone_settings(node, @cookbook_name)
 
@@ -43,7 +43,7 @@ template monasca_reconfigure_file do
     monasca_api_url: monasca_api_url,
     service: service,
     agent_settings: agent_settings,
-    agent_keystone: agent_keystone,
+    agent_user: agent_user,
     keystone_settings: keystone_settings,
     agent_dimensions: agent_dimensions,
     install_plugins_only: false

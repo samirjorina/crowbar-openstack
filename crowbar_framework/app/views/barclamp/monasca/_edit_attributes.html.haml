@@ -30,3 +30,9 @@
       = string_field %w(master smtp_user)
       = string_field %w(master smtp_password)
       = string_field %w(master smtp_from_address)
+
+    %fieldset
+      %legend
+        = t(".operator_user_header")
+
+      = password_field %w(operator_user password)

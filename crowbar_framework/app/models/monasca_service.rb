@@ -118,8 +118,8 @@ class MonascaService < PacemakerServiceObject
 
     base["attributes"][@bc_name]["service_password"] = random_password
     base["attributes"][@bc_name][:db][:password] = random_password
-    base["attributes"][@bc_name][:metric_agent][:keystone][:service_password] = random_password
-    base["attributes"][@bc_name][:log_agent][:keystone][:service_password] = random_password
+    base["attributes"][@bc_name][:operator_user][:password] = random_password
+    base["attributes"][@bc_name][:agent_user][:password] = random_password
     base["attributes"][@bc_name][:master][:influxdb_mon_api_password] = random_password
     base["attributes"][@bc_name][:master][:influxdb_mon_persister_password] = random_password
     base["attributes"][@bc_name][:master][:database_notification_password] = random_password
