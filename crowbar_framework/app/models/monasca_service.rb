@@ -94,7 +94,6 @@ class MonascaService < PacemakerServiceObject
 
     server_nodes = nodes.select { |n| n.intended_role == "monitoring" }
     server_nodes = [nodes.first] if server_nodes.empty?
-    server_nodes = server_nodes.map { |n| n.name }.compact
 
     agent_nodes = nodes.map { |n| n.name }.compact
 
